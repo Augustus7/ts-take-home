@@ -22,7 +22,7 @@ export const App = () => {
 
   return (
     <main className={styles.main}>
-      <Header />
+      <Header loadInsights = {() => loadInsights()} />
       <Insights
           className={styles.insights}
           insights={insights}
