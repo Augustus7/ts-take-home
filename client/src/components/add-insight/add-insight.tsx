@@ -13,7 +13,7 @@ export const AddInsight = (props: AddInsightProps) => {
     const brandSelect = form.querySelector("select") as HTMLSelectElement;
     const textArea = form.querySelector("textarea") as HTMLTextAreaElement;
 
-    await fetch("/insights/create", {
+    const response = await fetch("/api/insights/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,6 +24,10 @@ export const AddInsight = (props: AddInsightProps) => {
         text: textArea.value,
       }),
     });
+
+    if (response.ok) {
+      props.onClose();
+    }
   };
 
   return (

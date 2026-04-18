@@ -6,10 +6,19 @@ import type { Insight } from "../../schemas/insight.ts";
 type InsightsProps = {
   insights: Insight[];
   className?: string;
+  loadInsights?: () => Promise<void>
 };
 
-export const Insights = ({ insights, className }: InsightsProps) => {
-  const deleteInsight = () => undefined;
+export const Insights = ({ insights, className, loadInsights }: InsightsProps) => {
+  const deleteInsight = async (id: number) => {
+    const response = await fetch(`/api/insights/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      loadInsights?.();
+    }
+  };
 
   return (
     <div className={cx(className)}>
@@ -25,7 +34,7 @@ export const Insights = ({ insights, className }: InsightsProps) => {
                     <span>{date.toString()}</span>
                     <Trash2Icon
                       className={styles["insight-delete"]}
-                      onClick={deleteInsight}
+                      onClick={() => deleteInsight(id)}
                     />
                   </div>
                 </div>

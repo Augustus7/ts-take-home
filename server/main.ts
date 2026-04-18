@@ -8,6 +8,7 @@ import * as insightsTable from "$tables/insights.ts";
 import listInsights from "./operations/list-insights.ts";
 import lookupInsight from "./operations/lookup-insight.ts";
 import createInsight from "./operations/create-insight.ts";
+import deleteInsightById from "./operations/delete-insight-by-id.ts";
 
 console.log("Loading configuration");
 
@@ -33,10 +34,6 @@ const InsightCreateRequest = z.object({
   text: z.string(),
 });
 
-const _InsightDeleteRequest = z.object({
-  brandId: z.number().int().min(0)
-});
-
 router.get("/_health", (ctx) => {
   ctx.response.body = "OK";
   ctx.response.status = 200;
@@ -46,7 +43,7 @@ router.get("/_health", (ctx) => {
 router.get("/insights", (ctx) => {
   const result = listInsights({ db });
   ctx.response.body = result;
-  ctx.response.body = 200;
+  ctx.response.status = 200;
 });
 
 router.get("/insights/:id", (ctx) => {
@@ -73,8 +70,12 @@ router.post("/insights/create",async (ctx) => {
   ctx.response.body = { ok: true };
 });
 
-router.get("/insights/delete", (ctx) => {
-  // TODO
+router.delete("/insights/:id", async (ctx) => {
+  const params = ctx.params as Record<string, any>;
+
+  deleteInsightById({db, id: params.id})
+  ctx.response.status = 200;
+  ctx.response.body = { ok: true };
 });
 
 const app = new oak.Application();

@@ -6,15 +6,27 @@ import type { Insight } from "../schemas/insight.ts";
 
 export const App = () => {
   const [insights, setInsights] = useState<Insight>([]);
+  const loadInsights = async () => {
+    const res = await fetch("/api/insights");
+    const data = await res.json();
+    setInsights(  data.map((insight) => ({
+      ...insight,
+      date: new Date(insight.createdAt),
+    })));
+  };
 
   useEffect(() => {
-    fetch(`/api/insights`).then((res) => setInsights(res.json()));
+
+    loadInsights();
   }, []);
 
   return (
     <main className={styles.main}>
       <Header />
-      <Insights className={styles.insights} insights={insights} />
+      <Insights
+          className={styles.insights}
+          insights={insights}
+          loadInsights = {() => loadInsights()} />
     </main>
   );
 };
