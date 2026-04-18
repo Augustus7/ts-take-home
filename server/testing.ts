@@ -6,6 +6,7 @@ import { afterAll, beforeAll } from "@std/testing/bdd";
 type Fixture = HasDBClient & {
   insights: {
     insert(insights: insightsTable.Insert[]): void;
+    delete(id: number): void;
     selectAll(): insightsTable.Row[];
   };
 };
@@ -24,6 +25,9 @@ export const withDB = <R>(fn: (fixture: Fixture) => R): R => {
     insights: {
       selectAll() {
         return db.sql<insightsTable.Row>`SELECT * FROM insights`;
+      },
+      delete(id: number) {
+        db.exec(insightsTable.deleteStatement(id))
       },
       insert(insights) {
         for (const item of insights) {

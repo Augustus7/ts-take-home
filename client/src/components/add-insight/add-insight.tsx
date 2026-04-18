@@ -6,7 +6,25 @@ import styles from "./add-insight.module.css";
 type AddInsightProps = ModalProps;
 
 export const AddInsight = (props: AddInsightProps) => {
-  const addInsight = () => undefined;
+  const addInsight = async (event: SubmitEvent) => {
+    event.preventDefault();
+
+    const form = event.currentTarget as HTMLFormElement;
+    const brandSelect = form.querySelector("select") as HTMLSelectElement;
+    const textArea = form.querySelector("textarea") as HTMLTextAreaElement;
+
+    await fetch("/insights/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        brandId: Number(brandSelect.value),
+        date: new Date().toISOString(),
+        text: textArea.value,
+      }),
+    });
+  };
 
   return (
     <Modal {...props}>
