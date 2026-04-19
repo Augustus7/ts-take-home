@@ -27,11 +27,11 @@ export const withDB = <R>(fn: (fixture: Fixture) => R): R => {
         return db.sql<insightsTable.Row>`SELECT * FROM insights`;
       },
       delete(id: number) {
-        db.exec(insightsTable.deleteStatement(id))
+        db.exec(insightsTable.deleteInsightSql,[id]);
       },
       insert(insights) {
         for (const item of insights) {
-          db.exec(insightsTable.insertStatement(item));
+          db.exec(insightsTable.insertInsightSql,[item.brand, item.createdAt, item.text]);
         }
       },
     },

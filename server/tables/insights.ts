@@ -20,8 +20,5 @@ export type Insert = {
   text: string;
 };
 
-export const insertStatement = (item: Insert) =>
-  `INSERT INTO insights (brand, createdAt, text) VALUES (${item.brand}, '${item.createdAt}', '${item.text}')`;
-
-export const deleteStatement = (id: number) =>
-    `DELETE FROM insights WHERE id = ${id}`;
+export const insertInsightSql = `INSERT INTO insights (brand, createdAt, text) VALUES (?, ?, ?)`;
+export const deleteInsightSql = `DELETE FROM insights WHERE id = ?`;

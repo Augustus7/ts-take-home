@@ -8,7 +8,7 @@ type Input = HasDBClient & {
 export default (input: Input): void => {
   console.log(`Deleting insight for id=${input.id}`);
 
-  input.db.exec(insightsTable.deleteStatement(input.id));
+  input.db.exec(insightsTable.deleteInsightSql, [input.id]);
 
   console.log("Insight deleted successfully");
 };
