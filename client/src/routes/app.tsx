@@ -5,7 +5,7 @@ import styles from "./app.module.css";
 import type { Insight } from "../schemas/insight.ts";
 
 export const App = () => {
-  const [insights, setInsights] = useState<Insight>([]);
+  const [insights, setInsights] = useState<Insight[]>([]);
   const loadInsights = async () => {
     const res = await fetch("/api/insights");
     const data = await res.json();
