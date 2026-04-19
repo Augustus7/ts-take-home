@@ -11,6 +11,7 @@ export const App = () => {
     const data = await res.json();
     setInsights(  data.map((insight) => ({
       ...insight,
+      brandId: insight.brand,
       date: new Date(insight.createdAt),
     })));
   };
